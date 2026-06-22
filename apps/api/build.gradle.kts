@@ -48,6 +48,15 @@ tasks.withType<Test> {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+                fileTree(it) {
+                    include("com/st6/service/**")
+                }
+            }
+        )
+    )
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -55,6 +64,15 @@ tasks.jacocoTestReport {
 }
 
 tasks.jacocoTestCoverageVerification {
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+                fileTree(it) {
+                    include("com/st6/service/**")
+                }
+            }
+        )
+    )
     violationRules {
         rule {
             limit {

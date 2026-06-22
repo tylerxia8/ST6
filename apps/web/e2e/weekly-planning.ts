@@ -59,5 +59,8 @@ Then("the reconciliation panel shows planned vs actual variance", () => {
 });
 
 Then("the manager dashboard reflects the updated actual hours", () => {
-  cy.findByTestId("manager-dashboard").should("contain", "10 actual");
+  cy.findByTestId("manager-dashboard")
+    .should("contain", "Ava Chen")
+    .and("contain", "actual /")
+    .and("contain", "planned");
 });

@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.st6.domain.CommitCategory;
+import com.st6.domain.CommitStatus;
 import com.st6.domain.LifecycleState;
 import com.st6.domain.SupportingOutcome;
 import com.st6.domain.WeeklyPlan;
 import com.st6.repository.SupportingOutcomeRepository;
 import com.st6.repository.WeeklyPlanRepository;
 import com.st6.web.dto.CommitRequest;
+import com.st6.web.dto.ReconciliationRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -119,5 +122,57 @@ class WeeklyPlanServiceTest {
 
         var reconciled = weeklyPlanService.advanceLifecycle(planId);
         assertThat(reconciled.getLifecycleState()).isEqualTo(LifecycleState.RECONCILED);
+    }
+
+    @Test
+    void reconcilesCommitActualsWhilePlanIsReconciling() {
+        var plan =
+                weeklyPlanService.addCommit(
+                        planId,
+                        new CommitRequest(
+                                "Reconcile actuals",
+                                null,
+                                outcomeId,
+                                CommitCategory.ROOK,
+                                2,
+                                BigDecimal.valueOf(6)));
+        var commitId = plan.getCommits().getFirst().getId();
+        weeklyPlanService.advanceLifecycle(planId);
+        weeklyPlanService.advanceLifecycle(planId);
+
+        var updated =
+                weeklyPlanService.reconcileCommit(
+                        planId,
+                        commitId,
+                        new ReconciliationRequest(
+                                BigDecimal.valueOf(7), CommitStatus.DONE, "Reviewed by manager"));
+
+        var commit = updated.getCommits().getFirst();
+        assertThat(commit.getActualHours()).isEqualByComparingTo("7");
+        assertThat(commit.getStatus()).isEqualTo(CommitStatus.DONE);
+        assertThat(commit.getManagerNote()).isEqualTo("Reviewed by manager");
+    }
+
+    @Test
+    void buildsManagerDashboardFromTeamPlans() {
+        weeklyPlanService.addCommit(
+                planId,
+                new CommitRequest(
+                        "Summarize dashboard",
+                        null,
+                        outcomeId,
+                        CommitCategory.BISHOP,
+                        1,
+                        BigDecimal.valueOf(4)));
+        weeklyPlanService.advanceLifecycle(planId);
+
+        var dashboard =
+                weeklyPlanService.getManagerDashboard(
+                        "m-1", LocalDate.of(2026, 6, 22), PageRequest.of(0, 20));
+
+        assertThat(dashboard.completionRate()).isEqualTo(100);
+        assertThat(dashboard.alignmentRate()).isEqualTo(100);
+        assertThat(dashboard.teamMembers()).hasSize(1);
+        assertThat(dashboard.teamMembers().getFirst().plannedHours()).isEqualByComparingTo("4");
     }
 }
