@@ -175,4 +175,46 @@ class WeeklyPlanServiceTest {
         assertThat(dashboard.teamMembers()).hasSize(1);
         assertThat(dashboard.teamMembers().getFirst().plannedHours()).isEqualByComparingTo("4");
     }
+
+    @Test
+    void startsNextDraftByResettingCarriedForwardCommits() {
+        var plan =
+                weeklyPlanService.addCommit(
+                        planId,
+                        new CommitRequest(
+                                "Carry forward",
+                                null,
+                                outcomeId,
+                                CommitCategory.KNIGHT,
+                                3,
+                                BigDecimal.valueOf(5)));
+        var commitId = plan.getCommits().getFirst().getId();
+        weeklyPlanService.advanceLifecycle(planId);
+        weeklyPlanService.advanceLifecycle(planId);
+        weeklyPlanService.reconcileCommit(
+                planId,
+                commitId,
+                new ReconciliationRequest(
+                        BigDecimal.valueOf(2), CommitStatus.CARRIED_FORWARD, "Move to next week"));
+        weeklyPlanService.advanceLifecycle(planId);
+
+        var nextDraft = weeklyPlanService.advanceLifecycle(planId);
+
+        assertThat(nextDraft.getLifecycleState()).isEqualTo(LifecycleState.DRAFT);
+        assertThat(nextDraft.getSubmittedAt()).isNull();
+        assertThat(nextDraft.getReviewedAt()).isNull();
+        assertThat(nextDraft.getCommits().getFirst().getStatus()).isEqualTo(CommitStatus.PLANNED);
+        assertThat(nextDraft.getCommits().getFirst().getActualHours()).isEqualByComparingTo("0");
+    }
+
+    @Test
+    void returnsEmptyManagerDashboardWhenNoPlansMatch() {
+        var dashboard =
+                weeklyPlanService.getManagerDashboard(
+                        "missing-manager", LocalDate.of(2026, 6, 22), PageRequest.of(0, 20));
+
+        assertThat(dashboard.completionRate()).isZero();
+        assertThat(dashboard.alignmentRate()).isZero();
+        assertThat(dashboard.teamMembers()).isEmpty();
+    }
 }
