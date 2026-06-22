@@ -19,6 +19,8 @@
 8. Show the reconciliation variance panel.
 9. Show the manager dashboard roll-up.
 10. Explain how the module is exposed as a Module Federation remote for PA host integration.
+11. Mention that the same frontend can run in mock mode for review or API mode against the Spring backend.
+12. Show `docker-compose.yml` as the local production-style runtime path.
 
 ## Key Talking Points
 
@@ -26,3 +28,4 @@
 - Managers can see whether weekly work supports current RCDO priorities.
 - The lifecycle prevents uncontrolled edits after lock and creates a clear reconciliation stage.
 - The backend source supports PostgreSQL, Flyway, Spring Data Pageable, Auth0-style JWT validation, auditing, and quality gates.
+- Runtime scaffolding includes Docker Compose, CORS, API error responses, and a Gradle wrapper.

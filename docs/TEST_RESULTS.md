@@ -15,6 +15,7 @@ Date: 2026-06-22
 | Cypress/Gherkin setup | `npm run e2e` | Blocked | Cypress config and step definitions are present; local run requires `cypress install`, which previously failed with `ENOSPC` while downloading the binary |
 | Browser smoke check | In-app browser automation | Blocked | Browser runtime failed with environment metadata error before attaching |
 | Backend wrapper | `npm run api:test` | Blocked | Gradle wrapper downloaded Gradle 8.10.2, then local disk space prevented Gradle cache creation and dependency resolution |
+| Docker/API-mode follow-up | Static review | Not run | Dependency caches were removed to recover disk space; remaining disk budget is too low for another install/build cycle |
 
 ## E2E Coverage
 

@@ -25,6 +25,20 @@ npm run dev
 
 The web app runs at `http://localhost:5173`.
 
+By default, the frontend runs in mock mode so the assessment can be reviewed without PostgreSQL or Auth0:
+
+```bash
+VITE_API_MODE=mock
+```
+
+To point the frontend at the Spring API, set:
+
+```bash
+VITE_API_MODE=api
+VITE_API_BASE_URL=http://localhost:8080/api
+VITE_AUTH_TOKEN=<auth0-jwt>
+```
+
 ## Useful Commands
 
 ```bash
@@ -40,6 +54,16 @@ cd apps/api
 gradlew.bat test
 gradlew.bat bootRun
 ```
+
+## Docker Compose
+
+Copy `.env.example` to `.env`, then run:
+
+```bash
+docker compose up --build
+```
+
+Compose starts PostgreSQL 16.4, the Spring API, and the built web app.
 
 ## Documentation
 

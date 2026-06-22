@@ -25,7 +25,7 @@ The first screen is the weekly planning workspace. It includes:
 - Reconciliation summary showing planned vs. actual variance.
 - Manager dashboard with completion, alignment, turnaround, lifecycle, hours, and blocked work.
 
-The current UI uses an RTK Query `fakeBaseQuery` with deterministic seed data so reviewers can run the frontend without backend infrastructure. The endpoint boundaries mirror the Spring controller contract, so replacing the fake query with `fetchBaseQuery({ baseUrl: "/api" })` is straightforward.
+The current UI runs in mock mode by default using deterministic seed data so reviewers can run the frontend without backend infrastructure. It can also run in API mode with `VITE_API_MODE=api`, `VITE_API_BASE_URL`, and `VITE_AUTH_TOKEN`. The RTK Query service maps frontend-friendly commit labels to the backend enum contract.
 
 ## Backend API
 
@@ -34,6 +34,7 @@ Primary endpoints:
 - `GET /api/outcomes`
 - `GET /api/plans/current?ownerId={id}&weekStart={yyyy-mm-dd}`
 - `POST /api/plans/{planId}/commits`
+- `DELETE /api/plans/{planId}/commits/{commitId}`
 - `PATCH /api/plans/{planId}/commits/{commitId}/reconciliation`
 - `POST /api/plans/{planId}/lifecycle/advance`
 - `GET /api/managers/{managerId}/plans?weekStart={yyyy-mm-dd}&page=0&size=50`
@@ -53,6 +54,8 @@ Flyway migration `V1__initial_schema.sql` creates the PostgreSQL schema and inde
 ## Security
 
 The API is configured as an OAuth2 JWT resource server for Auth0-style issuer configuration. Health and info actuator endpoints are public; application endpoints require authentication.
+
+The API also includes CORS configuration for local frontend origins and structured JSON error responses for validation, not-found, and lifecycle-conflict failures.
 
 ## Performance Notes
 
@@ -76,3 +79,7 @@ gradlew.bat bootRun
 ```
 
 Production deployment would publish the web `dist` assets to S3/CloudFront and run the API as a containerized Spring Boot service on EKS.
+
+## Docker Runtime
+
+The repo includes `docker-compose.yml` for PostgreSQL, API, and web containers. The web image serves static assets through nginx and preserves SPA fallback routing for the standalone assessment app.

@@ -28,3 +28,7 @@ management:
 
 server:
   port: 8080
+
+st6:
+  cors:
+    allowed-origins: ${ST6_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:8088}

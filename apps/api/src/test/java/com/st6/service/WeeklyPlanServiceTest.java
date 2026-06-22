@@ -89,6 +89,25 @@ class WeeklyPlanServiceTest {
     }
 
     @Test
+    void deletesCommitWhilePlanIsDraft() {
+        var plan =
+                weeklyPlanService.addCommit(
+                        planId,
+                        new CommitRequest(
+                                "Remove me",
+                                null,
+                                outcomeId,
+                                CommitCategory.PAWN,
+                                1,
+                                BigDecimal.ONE));
+        var commitId = plan.getCommits().getFirst().getId();
+
+        var updated = weeklyPlanService.deleteCommit(planId, commitId);
+
+        assertThat(updated.getCommits()).isEmpty();
+    }
+
+    @Test
     void advancesThroughLifecycle() {
         var locked = weeklyPlanService.advanceLifecycle(planId);
         var reconciling = weeklyPlanService.advanceLifecycle(planId);

@@ -79,6 +79,16 @@ public class WeeklyPlanService {
     }
 
     @Transactional
+    public WeeklyPlan deleteCommit(UUID planId, UUID commitId) {
+        var plan = getEditablePlan(planId);
+        var removed = plan.getCommits().removeIf(commit -> commit.getId().equals(commitId));
+        if (!removed) {
+            throw new IllegalArgumentException("Commit not found");
+        }
+        return weeklyPlanRepository.save(plan);
+    }
+
+    @Transactional
     public WeeklyPlan advanceLifecycle(UUID planId) {
         var plan = weeklyPlanRepository.findById(planId).orElseThrow();
         switch (plan.getLifecycleState()) {
