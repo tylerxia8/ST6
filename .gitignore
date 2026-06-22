@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+.gradle/
+target/
+.env
+.env.local
+coverage/
+playwright-report/
+test-results/
+*.log
+*.tsbuildinfo
+apps/web/*.d.ts
+apps/web/*.js
+.DS_Store

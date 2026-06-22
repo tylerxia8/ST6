@@ -1,0 +1,21 @@
+{
+  "name": "st6",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Strategic weekly planning micro-frontend and API replacement for 15Five.",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm --workspace apps/web run dev",
+    "build": "npm --workspace apps/web run build",
+    "test": "npm --workspace apps/web run test",
+    "test:run": "npm --workspace apps/web run test:run",
+    "lint": "npm --workspace apps/web run lint",
+    "preview": "npm --workspace apps/web run preview",
+    "api:test": "cd apps/api && gradle test"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}
