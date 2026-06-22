@@ -13,3 +13,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://test.auth0.local/
+
+st6:
+  cors:
+    allowed-origins: http://localhost:5173
