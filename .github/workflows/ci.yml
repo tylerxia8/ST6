@@ -48,3 +48,17 @@ jobs:
         run: chmod +x gradlew
       - working-directory: apps/api
         run: ./gradlew test jacocoTestReport jacocoTestCoverageVerification
+
+  docker-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose config
+      - run: docker build -t st6-api:ci apps/api
+      - run: >
+          docker build
+          --build-arg VITE_API_MODE=api
+          --build-arg VITE_API_BASE_URL=http://localhost:8080/api
+          -f apps/web/Dockerfile
+          -t st6-web:ci
+          .
