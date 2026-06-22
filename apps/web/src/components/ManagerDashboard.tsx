@@ -8,7 +8,7 @@ interface ManagerDashboardProps {
 
 export function ManagerDashboard({ dashboard }: ManagerDashboardProps) {
   return (
-    <section className="rounded-md border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-md border border-slate-200 bg-white p-4 shadow-sm" data-testid="manager-dashboard">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-ink">Manager Review</h2>

@@ -62,7 +62,7 @@ export function App() {
                 <GitBranch className="h-4 w-4" aria-hidden="true" />
                 ST6 Weekly Commitments
               </div>
-              <h1 className="mt-2 text-2xl font-semibold text-ink md:text-3xl">
+              <h1 className="mt-2 text-2xl font-semibold text-ink md:text-3xl" data-testid="workspace-title">
                 {plan.ownerName}'s plan for {plan.weekStart}
               </h1>
               <p className="mt-2 max-w-3xl text-sm text-slate-600">
@@ -85,7 +85,12 @@ export function App() {
 
       <section className="mx-auto grid max-w-7xl gap-5 px-4 py-5 lg:px-6">
         <div className="grid gap-4 md:grid-cols-4">
-          <MetricTile label="Strategic Alignment" value={`${alignment}%`} helper="Commits linked to RCDO" />
+          <MetricTile
+            label="Strategic Alignment"
+            value={`${alignment}%`}
+            helper="Commits linked to RCDO"
+            testId="metric-strategic-alignment"
+          />
           <MetricTile label="Planned Capacity" value={`${plannedHours}h`} helper="Total weekly commitments" />
           <MetricTile label="Actuals Logged" value={`${actualHours}h`} helper="Used during reconciliation" />
           <MetricTile
@@ -114,7 +119,7 @@ export function App() {
           </div>
 
           <aside className="grid content-start gap-5">
-            <section className="rounded-md border border-slate-200 bg-white p-4 shadow-sm">
+            <section className="rounded-md border border-slate-200 bg-white p-4 shadow-sm" data-testid="reconciliation-panel">
               <div className="flex items-center gap-2">
                 <CalendarCheck className="h-5 w-5 text-copper" aria-hidden="true" />
                 <h2 className="text-lg font-semibold text-ink">Reconciliation</h2>

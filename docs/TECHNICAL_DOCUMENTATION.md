@@ -68,11 +68,11 @@ npm install
 npm run dev
 ```
 
-Backend development in an environment with Gradle:
+Backend development:
 
 ```bash
 cd apps/api
-gradle bootRun
+gradlew.bat bootRun
 ```
 
 Production deployment would publish the web `dist` assets to S3/CloudFront and run the API as a containerized Spring Boot service on EKS.

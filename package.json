@@ -11,9 +11,10 @@
     "build": "npm --workspace apps/web run build",
     "test": "npm --workspace apps/web run test",
     "test:run": "npm --workspace apps/web run test:run",
+    "e2e": "npm --workspace apps/web run e2e",
     "lint": "npm --workspace apps/web run lint",
     "preview": "npm --workspace apps/web run preview",
-    "api:test": "cd apps/api && gradle test"
+    "api:test": "cd apps/api && gradlew.bat test"
   },
   "engines": {
     "node": ">=20.19.0"

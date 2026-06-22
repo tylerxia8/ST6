@@ -33,12 +33,12 @@ npm run test:run
 npm run lint
 ```
 
-Backend source is in `apps/api`. In an environment with Gradle available:
+Backend source is in `apps/api` and includes a Gradle wrapper:
 
 ```bash
 cd apps/api
-gradle test
-gradle bootRun
+gradlew.bat test
+gradlew.bat bootRun
 ```
 
 ## Documentation

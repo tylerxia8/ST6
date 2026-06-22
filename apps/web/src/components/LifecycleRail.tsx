@@ -19,6 +19,8 @@ export function LifecycleRail({ state }: LifecycleRailProps) {
         return (
           <div
             key={step}
+            data-testid={`lifecycle-${step}`}
+            aria-current={isActive ? "step" : undefined}
             className={[
               "flex min-h-16 items-center gap-3 rounded-md border px-4 py-3",
               isActive

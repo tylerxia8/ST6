@@ -16,7 +16,7 @@ export function CommitTable({ commits, outcomes, editable, onUpdate, onDelete }:
   const outcomeById = new Map(outcomes.map((outcome) => [outcome.id, outcome]));
 
   return (
-    <div className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm" data-testid="commit-table">
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -71,6 +71,7 @@ export function CommitTable({ commits, outcomes, editable, onUpdate, onDelete }:
                   </td>
                   <td className="min-w-44 px-4 py-4">
                     <Select
+                      data-testid={`status-${commit.id}`}
                       sizing="sm"
                       value={commit.status}
                       disabled={!editable}

@@ -14,6 +14,8 @@ Tool: OpenAI Codex
 - Added Module Federation remote configuration.
 - Added Spring Boot backend source with JPA entities, Flyway schema, services, controllers, and tests.
 - Added technical documentation, test results, and demo script.
+- Added executable Cypress/Cucumber E2E wiring for the weekly planning feature.
+- Added a Gradle wrapper for backend test and run commands.
 
 ## Human Decisions
 
@@ -23,5 +25,5 @@ Tool: OpenAI Codex
 ## Limitations
 
 - The frontend currently uses a mock RTK Query base query for demo reliability.
-- Backend build execution depends on Gradle availability or adding a Gradle wrapper.
+- Cypress binary installation and backend Gradle dependency resolution were blocked locally by disk-space errors.
 - Demo video is represented by a script/checklist in this repository; an actual recorded video file still requires screen recording.
