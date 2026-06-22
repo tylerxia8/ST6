@@ -1,0 +1,18 @@
+.git
+.github
+docs
+apps/api
+node_modules
+apps/web/node_modules
+apps/web/dist
+apps/web/coverage
+apps/web/cypress/screenshots
+apps/web/cypress/videos
+coverage
+playwright-report
+test-results
+*.log
+*.tsbuildinfo
+.env
+.env.local
+ST6 PRD.md
