@@ -65,6 +65,11 @@ docker compose up --build
 
 Compose starts PostgreSQL 16.4, the Spring API, and the built web app.
 
+The default `.env.example` values run the API with `SPRING_PROFILES_ACTIVE=local`.
+That profile seeds demo data and installs a local-only demo authentication filter so the
+frontend can exercise the real API without requiring an Auth0 token. Use a non-local
+Spring profile and a real `AUTH0_ISSUER_URI` for production-like JWT validation.
+
 ## API Docs
 
 When the API is running, OpenAPI documentation is available at:
