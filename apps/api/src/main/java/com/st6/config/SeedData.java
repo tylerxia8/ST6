@@ -12,8 +12,10 @@ import java.util.UUID;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("local")
 public class SeedData {
     @Bean
     CommandLineRunner seed(
@@ -23,7 +25,7 @@ public class SeedData {
                 return;
             }
 
-            var outcome =
+            var alignmentOutcome =
                     outcomeRepository.save(
                             SupportingOutcome.builder()
                                     .id(UUID.fromString("11111111-1111-1111-1111-111111111111"))
@@ -32,6 +34,15 @@ public class SeedData {
                                     .outcome(
                                             "Every weekly commitment maps to an approved Supporting Outcome")
                                     .owner("Strategy Ops")
+                                    .build());
+            var reviewOutcome =
+                    outcomeRepository.save(
+                            SupportingOutcome.builder()
+                                    .id(UUID.fromString("11111111-1111-1111-1111-111111111112"))
+                                    .rallyCry("Win enterprise trust")
+                                    .definingObjective("Reduce manager review latency")
+                                    .outcome("Managers complete weekly review within 24 business hours")
+                                    .owner("People Ops")
                                     .build());
 
             var plan =
@@ -45,12 +56,22 @@ public class SeedData {
             plan.addCommit(
                     WeeklyCommit.builder()
                             .id(UUID.fromString("33333333-3333-3333-3333-333333333333"))
-                            .supportingOutcome(outcome)
+                            .supportingOutcome(alignmentOutcome)
                             .title("Ship RCDO-linked commit form")
                             .description("Require Supporting Outcome mapping on every commit.")
                             .category(CommitCategory.QUEEN)
                             .priority(1)
                             .plannedHours(BigDecimal.valueOf(12))
+                            .build());
+            plan.addCommit(
+                    WeeklyCommit.builder()
+                            .id(UUID.fromString("33333333-3333-3333-3333-333333333334"))
+                            .supportingOutcome(reviewOutcome)
+                            .title("Tighten manager review queue")
+                            .description("Surface plans waiting for manager attention.")
+                            .category(CommitCategory.ROOK)
+                            .priority(2)
+                            .plannedHours(BigDecimal.valueOf(6))
                             .build());
             planRepository.save(plan);
         };

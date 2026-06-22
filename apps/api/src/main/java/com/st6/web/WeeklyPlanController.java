@@ -3,6 +3,7 @@ package com.st6.web;
 import com.st6.repository.SupportingOutcomeRepository;
 import com.st6.service.WeeklyPlanService;
 import com.st6.web.dto.CommitRequest;
+import com.st6.web.dto.ManagerDashboardResponse;
 import com.st6.web.dto.ReconciliationRequest;
 import com.st6.web.dto.SupportingOutcomeResponse;
 import com.st6.web.dto.TeamMemberSummaryResponse;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,6 +38,7 @@ public class WeeklyPlanController {
     }
 
     @GetMapping("/outcomes")
+    @PreAuthorize("@st6Authorization.canReadOutcomes(authentication)")
     public java.util.List<SupportingOutcomeResponse> outcomes() {
         return supportingOutcomeRepository.findAll().stream()
                 .map(SupportingOutcomeResponse::from)
@@ -43,18 +46,21 @@ public class WeeklyPlanController {
     }
 
     @GetMapping("/plans/current")
+    @PreAuthorize("@st6Authorization.canReadPlan(authentication, #ownerId)")
     public WeeklyPlanResponse currentPlan(
             @RequestParam String ownerId, @RequestParam LocalDate weekStart) {
         return WeeklyPlanResponse.from(weeklyPlanService.getPlan(ownerId, weekStart));
     }
 
     @PostMapping("/plans/{planId}/commits")
+    @PreAuthorize("@st6Authorization.canWritePlan(authentication)")
     public WeeklyPlanResponse addCommit(
             @PathVariable UUID planId, @Valid @RequestBody CommitRequest request) {
         return WeeklyPlanResponse.from(weeklyPlanService.addCommit(planId, request));
     }
 
     @PatchMapping("/plans/{planId}/commits/{commitId}/reconciliation")
+    @PreAuthorize("@st6Authorization.canWritePlan(authentication)")
     public WeeklyPlanResponse reconcileCommit(
             @PathVariable UUID planId,
             @PathVariable UUID commitId,
@@ -63,20 +69,30 @@ public class WeeklyPlanController {
     }
 
     @DeleteMapping("/plans/{planId}/commits/{commitId}")
+    @PreAuthorize("@st6Authorization.canWritePlan(authentication)")
     public WeeklyPlanResponse deleteCommit(@PathVariable UUID planId, @PathVariable UUID commitId) {
         return WeeklyPlanResponse.from(weeklyPlanService.deleteCommit(planId, commitId));
     }
 
     @PostMapping("/plans/{planId}/lifecycle/advance")
+    @PreAuthorize("@st6Authorization.canWritePlan(authentication)")
     public WeeklyPlanResponse advanceLifecycle(@PathVariable UUID planId) {
         return WeeklyPlanResponse.from(weeklyPlanService.advanceLifecycle(planId));
     }
 
     @GetMapping("/managers/{managerId}/plans")
+    @PreAuthorize("@st6Authorization.canReviewTeam(authentication)")
     public Page<TeamMemberSummaryResponse> teamPlans(
             @PathVariable String managerId, @RequestParam LocalDate weekStart, Pageable pageable) {
         return weeklyPlanService
                 .getTeamPlans(managerId, weekStart, pageable)
                 .map(TeamMemberSummaryResponse::from);
+    }
+
+    @GetMapping("/managers/{managerId}/dashboard")
+    @PreAuthorize("@st6Authorization.canReviewTeam(authentication)")
+    public ManagerDashboardResponse managerDashboard(
+            @PathVariable String managerId, @RequestParam LocalDate weekStart, Pageable pageable) {
+        return weeklyPlanService.getManagerDashboard(managerId, weekStart, pageable);
     }
 }

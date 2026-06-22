@@ -7,7 +7,11 @@ import com.st6.domain.WeeklyPlan;
 import com.st6.repository.SupportingOutcomeRepository;
 import com.st6.repository.WeeklyPlanRepository;
 import com.st6.web.dto.CommitRequest;
+import com.st6.web.dto.ManagerDashboardResponse;
 import com.st6.web.dto.ReconciliationRequest;
+import com.st6.web.dto.TeamMemberSummaryResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -38,6 +42,35 @@ public class WeeklyPlanService {
     @Transactional(readOnly = true)
     public Page<WeeklyPlan> getTeamPlans(String managerId, LocalDate weekStart, Pageable pageable) {
         return weeklyPlanRepository.findByManagerIdAndWeekStart(managerId, weekStart, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public ManagerDashboardResponse getManagerDashboard(
+            String managerId, LocalDate weekStart, Pageable pageable) {
+        var members =
+                getTeamPlans(managerId, weekStart, pageable).stream()
+                        .map(TeamMemberSummaryResponse::from)
+                        .toList();
+        var completionRate =
+                members.isEmpty()
+                        ? 0
+                        : BigDecimal.valueOf(
+                                        members.stream()
+                                                .filter(member -> member.lifecycleState() != LifecycleState.DRAFT)
+                                                .count()
+                                                * 100)
+                                .divide(BigDecimal.valueOf(members.size()), 0, RoundingMode.HALF_UP)
+                                .intValue();
+        var alignmentRate =
+                members.isEmpty()
+                        ? 0
+                        : BigDecimal.valueOf(
+                                        members.stream().mapToInt(TeamMemberSummaryResponse::alignment).sum())
+                                .divide(BigDecimal.valueOf(members.size()), 0, RoundingMode.HALF_UP)
+                                .intValue();
+
+        return new ManagerDashboardResponse(
+                weekStart, completionRate, alignmentRate, BigDecimal.ZERO, members);
     }
 
     @Transactional

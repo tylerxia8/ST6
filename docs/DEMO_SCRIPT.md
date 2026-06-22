@@ -21,6 +21,8 @@
 10. Explain how the module is exposed as a Module Federation remote for PA host integration.
 11. Mention that the same frontend can run in mock mode for review or API mode against the Spring backend.
 12. Show `docker-compose.yml` as the local production-style runtime path.
+13. Show `/swagger-ui.html` as the API contract surface.
+14. Mention the Outlook Graph reminder service boundary.
 
 ## Key Talking Points
 

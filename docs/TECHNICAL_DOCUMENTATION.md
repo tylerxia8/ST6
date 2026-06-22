@@ -38,6 +38,7 @@ Primary endpoints:
 - `PATCH /api/plans/{planId}/commits/{commitId}/reconciliation`
 - `POST /api/plans/{planId}/lifecycle/advance`
 - `GET /api/managers/{managerId}/plans?weekStart={yyyy-mm-dd}&page=0&size=50`
+- `GET /api/managers/{managerId}/dashboard?weekStart={yyyy-mm-dd}&page=0&size=50`
 
 Team views use Spring Data `Pageable` to support large result sets.
 
@@ -56,6 +57,15 @@ Flyway migration `V1__initial_schema.sql` creates the PostgreSQL schema and inde
 The API is configured as an OAuth2 JWT resource server for Auth0-style issuer configuration. Health and info actuator endpoints are public; application endpoints require authentication.
 
 The API also includes CORS configuration for local frontend origins and structured JSON error responses for validation, not-found, and lifecycle-conflict failures.
+
+Method-level authorization is enabled. The intended Auth0 scopes are:
+
+- `st6:read`
+- `st6:write`
+- `st6:manager`
+- `st6:admin`
+
+OpenAPI documentation is exposed by `springdoc-openapi` at `/swagger-ui.html`.
 
 ## Performance Notes
 
@@ -83,3 +93,11 @@ Production deployment would publish the web `dist` assets to S3/CloudFront and r
 ## Docker Runtime
 
 The repo includes `docker-compose.yml` for PostgreSQL, API, and web containers. The web image serves static assets through nginx and preserves SPA fallback routing for the standalone assessment app.
+
+## Outlook Integration Boundary
+
+`OutlookPlanningReminderService` defines the Microsoft Graph integration seam for weekly planning and reconciliation reminders. The current implementation is a no-op service so the application can run without tenant credentials; production can replace it with a Graph-backed implementation.
+
+## CI
+
+GitHub Actions are configured in `.github/workflows/ci.yml` for frontend lint/test/build, Cypress E2E, backend tests, JaCoCo, and Testcontainers-backed PostgreSQL verification.

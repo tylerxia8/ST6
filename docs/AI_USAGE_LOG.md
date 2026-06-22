@@ -18,6 +18,8 @@ Tool: OpenAI Codex
 - Added a Gradle wrapper for backend test and run commands.
 - Added Docker runtime scaffolding and frontend API-mode configuration.
 - Added backend CORS, structured error responses, and delete support for commit CRUD.
+- Split frontend mock and HTTP API clients.
+- Added GitHub Actions CI, OpenAPI, Auth0 scope checks, Testcontainers PostgreSQL test scaffolding, and Outlook integration boundary.
 
 ## Human Decisions
 

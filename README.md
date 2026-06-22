@@ -65,9 +65,25 @@ docker compose up --build
 
 Compose starts PostgreSQL 16.4, the Spring API, and the built web app.
 
+## API Docs
+
+When the API is running, OpenAPI documentation is available at:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+Application endpoints expect JWT scopes:
+
+- `st6:read`
+- `st6:write`
+- `st6:manager`
+- `st6:admin`
+
 ## Documentation
 
 - [Technical Documentation](docs/TECHNICAL_DOCUMENTATION.md)
 - [Test Results](docs/TEST_RESULTS.md)
 - [AI Usage Log](docs/AI_USAGE_LOG.md)
 - [Demo Script](docs/DEMO_SCRIPT.md)
+- [Demo Video Guide](docs/DEMO_VIDEO_GUIDE.md)
