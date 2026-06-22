@@ -112,11 +112,12 @@ class WeeklyPlanServiceTest {
     @Test
     void advancesThroughLifecycle() {
         var locked = weeklyPlanService.advanceLifecycle(planId);
-        var reconciling = weeklyPlanService.advanceLifecycle(planId);
-        var reconciled = weeklyPlanService.advanceLifecycle(planId);
-
         assertThat(locked.getLifecycleState()).isEqualTo(LifecycleState.LOCKED);
+
+        var reconciling = weeklyPlanService.advanceLifecycle(planId);
         assertThat(reconciling.getLifecycleState()).isEqualTo(LifecycleState.RECONCILING);
+
+        var reconciled = weeklyPlanService.advanceLifecycle(planId);
         assertThat(reconciled.getLifecycleState()).isEqualTo(LifecycleState.RECONCILED);
     }
 }

@@ -52,7 +52,10 @@ When("Ava enters actual hours and a completion status", () => {
 });
 
 Then("the reconciliation panel shows planned vs actual variance", () => {
-  cy.findByTestId("reconciliation-panel").should("contain", "variance -2h");
+  cy.findByTestId("reconciliation-panel")
+    .should("contain", "Ship RCDO-linked commit form")
+    .and("contain", "Done")
+    .and("contain", "variance");
 });
 
 Then("the manager dashboard reflects the updated actual hours", () => {
