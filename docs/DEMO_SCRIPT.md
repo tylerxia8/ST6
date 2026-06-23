@@ -23,6 +23,7 @@
 12. Show `docker-compose.yml` as the local production-style runtime path.
 13. Show `/swagger-ui.html` as the API contract surface.
 14. Mention the Outlook Graph reminder service boundary.
+15. Show `docs/DEPLOYMENT.md`, `.env.production.example`, `.github/workflows/release.yml`, and `infra/k8s` as the CloudFront/EKS/Auth0/RDS deployment path.
 
 ## Key Talking Points
 
@@ -30,4 +31,4 @@
 - Managers can see whether weekly work supports current RCDO priorities.
 - The lifecycle prevents uncontrolled edits after lock and creates a clear reconciliation stage.
 - The backend source supports PostgreSQL, Flyway, Spring Data Pageable, Auth0-style JWT validation, auditing, and quality gates.
-- Runtime scaffolding includes Docker Compose, CORS, API error responses, and a Gradle wrapper.
+- Runtime scaffolding includes Docker Compose, CORS, API error responses, a Gradle wrapper, production environment templates, release image publishing, and Kubernetes deployment manifests.

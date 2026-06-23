@@ -90,7 +90,18 @@ Application endpoints expect JWT scopes:
 ## Documentation
 
 - [Technical Documentation](docs/TECHNICAL_DOCUMENTATION.md)
+- [Deployment Guide](docs/DEPLOYMENT.md)
 - [Test Results](docs/TEST_RESULTS.md)
 - [AI Usage Log](docs/AI_USAGE_LOG.md)
 - [Demo Script](docs/DEMO_SCRIPT.md)
 - [Demo Video Guide](docs/DEMO_VIDEO_GUIDE.md)
+
+## Production Path
+
+Production deployment uses the Spring API image, PostgreSQL/RDS, Auth0 JWT validation,
+and CloudFront-hosted Module Federation assets. See `.env.production.example`,
+`.github/workflows/release.yml`, and `infra/k8s/` for the release and EKS templates.
+
+The assessment repo uses npm workspaces for portability in this environment. The code is
+kept in an Nx-compatible monorepo shape (`apps/web`, `apps/api`, shared root scripts), but
+Nx/Yarn wiring is intentionally documented rather than required for reviewers to run it.

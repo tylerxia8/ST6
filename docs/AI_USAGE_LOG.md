@@ -1,6 +1,6 @@
 # AI Usage Log
 
-Date: 2026-06-21
+Date: 2026-06-23
 
 Tool: OpenAI Codex
 
@@ -20,6 +20,10 @@ Tool: OpenAI Codex
 - Added backend CORS, structured error responses, and delete support for commit CRUD.
 - Split frontend mock and HTTP API clients.
 - Added GitHub Actions CI, OpenAPI, Auth0 scope checks, Testcontainers PostgreSQL test scaffolding, and Outlook integration boundary.
+- Added API-backed Cypress E2E through the Vite proxy against the Compose-backed Spring API.
+- Fixed API-mode commit creation by disabling CSRF for the API chain and returning detailed plans after mutations.
+- Added production deployment documentation, Kubernetes templates, a production environment template, and a tag-based image release workflow.
+- Documented the npm-vs-Nx/Yarn assessment tradeoff and the Microsoft Graph implementation boundary.
 
 ## Human Decisions
 
@@ -28,7 +32,7 @@ Tool: OpenAI Codex
 
 ## Limitations
 
-- The frontend currently uses a mock RTK Query base query for demo reliability.
-- Cypress binary installation and backend Gradle dependency resolution were blocked locally by disk-space errors.
-- Later verification was limited by the remaining local disk budget after cache cleanup.
+- The frontend defaults to mock mode for demo reliability, but CI now validates API mode against the Spring backend.
+- Local full-stack validation was limited by the remaining local disk budget after cache cleanup; GitHub Actions is the authoritative validation path.
+- Microsoft Graph reminder delivery is represented by an interface and no-op implementation until tenant credentials and calendar/mail rules are supplied.
 - Demo video is represented by a script/checklist in this repository; an actual recorded video file still requires screen recording.

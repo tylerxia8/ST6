@@ -11,6 +11,7 @@ The repository is organized as a small monorepo:
 - `apps/web`: React 18, Vite 5, TypeScript strict mode, Tailwind CSS, Flowbite React, Redux Toolkit, and RTK Query.
 - `apps/api`: Spring Boot 3.3, Java 21, Spring Data JPA, Flyway, PostgreSQL, OAuth2 resource server configuration, JaCoCo, Spotless, and SpotBugs configuration.
 - `docs`: assessment deliverables and operating notes.
+- `infra/k8s`: template Kubernetes manifests for EKS-style API deployment.
 
 The frontend can run standalone for assessment and is also configured as a Vite Module Federation remote named `st6_weekly_commitments`. It exposes `./WeeklyCommitments` from `src/remote/WeeklyCommitmentsRemote.tsx`.
 
@@ -58,6 +59,8 @@ The API is configured as an OAuth2 JWT resource server for Auth0-style issuer co
 
 The API also includes CORS configuration for local frontend origins and structured JSON error responses for validation, not-found, and lifecycle-conflict failures.
 
+The `local` Spring profile installs deterministic demo authentication for Docker Compose and CI API-mode tests. Production deployments must use a non-local profile so all application endpoints validate JWTs from `AUTH0_ISSUER_URI`.
+
 Method-level authorization is enabled. The intended Auth0 scopes are:
 
 - `st6:read`
@@ -90,14 +93,25 @@ gradlew.bat bootRun
 
 Production deployment would publish the web `dist` assets to S3/CloudFront and run the API as a containerized Spring Boot service on EKS.
 
+Deployment details are captured in `docs/DEPLOYMENT.md`, `.env.production.example`, `.github/workflows/release.yml`, and `infra/k8s`.
+
+## Package Management Note
+
+The PRD names Yarn Workspaces and Nx because the PA host uses that stack. This repository uses npm scripts to keep the assessment easy to install in constrained environments while preserving a monorepo layout that can be migrated to Nx without moving application boundaries:
+
+- `apps/web` is the remote frontend boundary.
+- `apps/api` is the backend service boundary.
+- root scripts orchestrate frontend checks.
+- backend scripts remain under the Gradle wrapper.
+
 ## Docker Runtime
 
 The repo includes `docker-compose.yml` for PostgreSQL, API, and web containers. The web image serves static assets through nginx and preserves SPA fallback routing for the standalone assessment app.
 
 ## Outlook Integration Boundary
 
-`OutlookPlanningReminderService` defines the Microsoft Graph integration seam for weekly planning and reconciliation reminders. The current implementation is a no-op service so the application can run without tenant credentials; production can replace it with a Graph-backed implementation.
+`OutlookPlanningReminderService` defines the Microsoft Graph integration seam for weekly planning and reconciliation reminders. The current implementation is a no-op service so the application can run without tenant credentials; production can replace it with a Graph-backed implementation once tenant-approved app credentials and reminder delivery rules are available.
 
 ## CI
 
-GitHub Actions are configured in `.github/workflows/ci.yml` for frontend lint/test/build, Cypress E2E, backend tests, JaCoCo, and Testcontainers-backed PostgreSQL verification.
+GitHub Actions are configured in `.github/workflows/ci.yml` for frontend lint/test/build, Cypress E2E, backend tests, JaCoCo, Docker Compose smoke checks, and API-backed Cypress E2E. A tag-based release workflow in `.github/workflows/release.yml` publishes API and web images to GitHub Container Registry.

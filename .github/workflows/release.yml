@@ -1,0 +1,43 @@
+name: Release Images
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_WEB_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://api.example.com/api' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./apps/api
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/st6-api:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/st6-api:latest
+      - name: Build and push web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          push: true
+          build-args: |
+            VITE_API_MODE=api
+            VITE_API_BASE_URL=${{ env.RELEASE_WEB_API_BASE_URL }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/st6-web:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/st6-web:latest
