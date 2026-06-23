@@ -16,7 +16,7 @@ Date: 2026-06-22
 | Browser smoke check | In-app browser automation | Blocked | Browser runtime failed with environment metadata error before attaching |
 | Backend wrapper | `npm run api:test` | Blocked locally | Gradle wrapper downloaded Gradle 8.10.2, then the local daemon disappeared under disk/memory pressure before tasks completed |
 | Docker/API-mode follow-up | Static review | Not run locally | Dependency caches were removed to recover disk space; remaining disk budget is too low for another install/build cycle |
-| CI workflow | GitHub Actions run `27992584388` | Passed | Frontend lint, unit tests, build, Cypress E2E, backend tests, JaCoCo report, service coverage verification, Compose config, API/web image build, Compose stack startup, API health curl, web curl, and teardown passed on commit `0a4d171` |
+| CI workflow | GitHub Actions run `27994513643` | Passed | Frontend lint, unit tests, build, Cypress E2E, backend tests, JaCoCo report, service coverage verification, Compose config, API/web image build, Compose stack startup, API health curl, seeded API data curls, web curl, and teardown passed on commit `16c2609` |
 
 ## E2E Coverage
 
