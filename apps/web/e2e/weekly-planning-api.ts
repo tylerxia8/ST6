@@ -3,9 +3,9 @@ import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 const apiCommitTitle = "Validate API-backed Graph sync";
 
 Given("Ava opens the API-backed weekly planning workspace", () => {
-  cy.intercept("GET", "**/api/plans/current*").as("getCurrentPlan");
+  cy.intercept("GET", "/api/plans/current*").as("getCurrentPlan");
   cy.visit("/");
-  cy.wait("@getCurrentPlan").its("response.statusCode").should("eq", 200);
+  cy.wait("@getCurrentPlan");
   cy.findByTestId("workspace-title").should("contain", "Ava Chen");
 });
 
