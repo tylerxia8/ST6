@@ -6,8 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -20,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @Profile("local")
 public class LocalDemoAuthenticationFilter extends OncePerRequestFilter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocalDemoAuthenticationFilter.class);
     private static final List<SimpleGrantedAuthority> AUTHORITIES =
             List.of(
                     new SimpleGrantedAuthority("SCOPE_st6:read"),
@@ -43,14 +40,6 @@ public class LocalDemoAuthenticationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken("u-morgan", "local-demo", AUTHORITIES));
             SecurityContextHolder.setContext(context);
         }
-        LOGGER.info(
-                "Local demo auth method={} uri={} origin={} authorizationKind={} existingAuth={} applied={}",
-                request.getMethod(),
-                request.getRequestURI(),
-                request.getHeader(HttpHeaders.ORIGIN),
-                authorizationKind(request),
-                authentication == null ? "none" : authentication.getClass().getSimpleName(),
-                appliedDemoAuthentication);
 
         filterChain.doFilter(request, response);
     }
@@ -58,14 +47,5 @@ public class LocalDemoAuthenticationFilter extends OncePerRequestFilter {
     private static boolean hasBearerToken(HttpServletRequest request) {
         var authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         return authorization != null && authorization.startsWith("Bearer ");
-    }
-
-    private static String authorizationKind(HttpServletRequest request) {
-        var authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authorization == null || authorization.isBlank()) {
-            return "none";
-        }
-        var separator = authorization.indexOf(' ');
-        return separator > 0 ? authorization.substring(0, separator) : "present";
     }
 }

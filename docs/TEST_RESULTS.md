@@ -1,6 +1,6 @@
 # Test Results
 
-Date: 2026-06-22
+Date: 2026-06-23
 
 ## Latest Local Results
 
@@ -15,11 +15,11 @@ Date: 2026-06-22
 | Cypress/Gherkin setup | `npm run e2e` | Blocked | Cypress config and step definitions are present; local run requires `cypress install`, which previously failed with `ENOSPC` while downloading the binary |
 | Browser smoke check | In-app browser automation | Blocked | Browser runtime failed with environment metadata error before attaching |
 | Backend wrapper | `npm run api:test` | Blocked locally | Gradle wrapper downloaded Gradle 8.10.2, then the local daemon disappeared under disk/memory pressure before tasks completed |
-| Docker/API-mode follow-up | Static review | Not run locally | Dependency caches were removed to recover disk space; remaining disk budget is too low for another install/build cycle |
-| CI workflow | GitHub Actions run `28042820229` | Passed | Frontend lint, unit tests, build, Cypress E2E, backend tests, JaCoCo report, service coverage verification, Compose config, API/web image build, Compose stack startup, reusable smoke script, manager dashboard authorization path, controller authorization tests, and teardown passed on commit `4c71bcc` |
+| Docker/API-mode follow-up | GitHub Actions run `28051822395` | Passed | API-backed Cypress E2E exercised Vite proxy, local API auth, commit creation, and lifecycle lock through the Compose-backed API on commit `38e5ed3` |
+| CI workflow | GitHub Actions run `28051822395` | Passed | Frontend lint, unit tests, build, Cypress E2E, backend tests, JaCoCo report, service coverage verification, Compose config, API/web image build, Compose stack startup, API-backed Cypress E2E, reusable smoke script, manager dashboard authorization path, controller authorization tests, and teardown passed on commit `38e5ed3` |
 
 ## E2E Coverage
 
-The repository includes executable Cypress/Cucumber wiring for `apps/web/e2e/weekly-planning.feature` plus step definitions in `apps/web/e2e/weekly-planning.ts`.
+The repository includes executable Cypress/Cucumber wiring for `apps/web/e2e/weekly-planning.feature` plus step definitions in `apps/web/e2e/weekly-planning.ts`. API-backed Cypress coverage lives in `apps/web/e2e/weekly-planning-api.feature` and `apps/web/e2e/weekly-planning-api.ts`.
 
-The scenarios cover weekly commit creation, RCDO linkage, lifecycle movement, reconciliation, and manager review.
+The scenarios cover weekly commit creation, RCDO linkage, lifecycle movement, reconciliation, manager review, and a Compose-backed API path for commit creation and plan locking.
