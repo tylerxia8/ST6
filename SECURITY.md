@@ -20,7 +20,7 @@ Include:
 The repository includes:
 
 - Dependabot updates for npm, Gradle, Docker, and GitHub Actions.
-- CodeQL scanning for Java and TypeScript.
+- CodeQL scanning for Java and TypeScript, saved as SARIF artifacts.
 - Trivy container image scans saved as SARIF artifacts, with best-effort upload to GitHub code scanning when repository settings allow it.
 - CI coverage for frontend lint/test/build, backend tests and coverage, Docker Compose smoke checks, and API-backed Cypress E2E.
 

@@ -46,6 +46,13 @@ jobs:
       - uses: github/codeql-action/analyze@v4
         with:
           category: codeql-java
+          upload: false
+          output: codeql-results
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codeql-java-sarif
+          path: codeql-results
 
   analyze-typescript:
     name: Analyze TypeScript
@@ -61,3 +68,10 @@ jobs:
       - uses: github/codeql-action/analyze@v4
         with:
           category: codeql-typescript
+          upload: false
+          output: codeql-results
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codeql-typescript-sarif
+          path: codeql-results
