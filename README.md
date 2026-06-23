@@ -64,6 +64,8 @@ docker compose up --build
 ```
 
 Compose starts PostgreSQL 16.4, the Spring API, and the built web app.
+After the stack is up, run `bash scripts/compose-smoke.sh` to verify API health,
+seeded demo data, and the web entrypoint.
 
 The default `.env.example` values run the API with `SPRING_PROFILES_ACTIVE=local`.
 That profile seeds demo data and installs a local-only demo authentication filter so the

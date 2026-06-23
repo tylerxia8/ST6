@@ -59,21 +59,7 @@ jobs:
       - run: docker compose config
       - run: docker compose build api web
       - run: docker compose up -d postgres api web
-      - run: |
-          for i in {1..45}; do
-            curl -fsS http://localhost:8080/actuator/health && break
-            sleep 2
-          done
-          curl -fsS http://localhost:8080/actuator/health
-      - run: |
-          curl -fsS http://localhost:8080/api/outcomes | grep "Win enterprise trust"
-          curl -fsS "http://localhost:8080/api/plans/current?ownerId=u-ava&weekStart=2026-06-22" | grep "Ava Chen"
-      - run: |
-          for i in {1..30}; do
-            curl -fsS http://localhost:8088 && break
-            sleep 2
-          done
-          curl -fsS http://localhost:8088
+      - run: bash scripts/compose-smoke.sh
       - if: failure()
         run: docker compose logs
       - if: always()
