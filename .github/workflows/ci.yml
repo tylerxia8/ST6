@@ -51,14 +51,27 @@ jobs:
 
   docker-images:
     runs-on: ubuntu-latest
+    env:
+      VITE_API_MODE: api
+      VITE_API_BASE_URL: http://localhost:8080/api
     steps:
       - uses: actions/checkout@v4
       - run: docker compose config
-      - run: docker build -t st6-api:ci apps/api
-      - run: >
-          docker build
-          --build-arg VITE_API_MODE=api
-          --build-arg VITE_API_BASE_URL=http://localhost:8080/api
-          -f apps/web/Dockerfile
-          -t st6-web:ci
-          .
+      - run: docker compose build api web
+      - run: docker compose up -d postgres api web
+      - run: |
+          for i in {1..45}; do
+            curl -fsS http://localhost:8080/actuator/health && break
+            sleep 2
+          done
+          curl -fsS http://localhost:8080/actuator/health
+      - run: |
+          for i in {1..30}; do
+            curl -fsS http://localhost:8088 && break
+            sleep 2
+          done
+          curl -fsS http://localhost:8088
+      - if: failure()
+        run: docker compose logs
+      - if: always()
+        run: docker compose down -v
