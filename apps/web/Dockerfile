@@ -11,7 +11,7 @@ COPY apps/web apps/web
 WORKDIR /workspace/apps/web
 RUN npm run build
 
-FROM nginx:1.27-alpine
+FROM nginx:1.31-alpine
 ARG OCI_SOURCE=https://github.com/tylerxia8/ST6
 ARG OCI_REVISION=local
 ARG OCI_VERSION=dev
