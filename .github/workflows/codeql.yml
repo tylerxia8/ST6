@@ -21,8 +21,8 @@ permissions:
   security-events: write
 
 jobs:
-  analyze:
-    name: Analyze Java and TypeScript
+  analyze-java:
+    name: Analyze Java
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,23 +32,31 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: actions/setup-node@v4
+      - uses: github/codeql-action/init@v4
         with:
-          node-version: 22
-          cache: npm
-
-      - uses: github/codeql-action/init@v3
-        with:
-          languages: java-kotlin,javascript-typescript
+          languages: java-kotlin
           build-mode: manual
-
-      - run: npm ci
 
       - working-directory: apps/api
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon testClasses
 
-      - uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/analyze@v4
         with:
-          category: codeql-java-typescript
+          category: codeql-java
+
+  analyze-typescript:
+    name: Analyze TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          build-mode: none
+
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: codeql-typescript
