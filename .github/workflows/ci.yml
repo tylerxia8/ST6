@@ -33,7 +33,7 @@ jobs:
             sleep 2
           done
           curl -fsS http://localhost:5173
-          npm run e2e
+          npx cypress run --spec e2e/weekly-planning.feature
 
   backend:
     runs-on: ubuntu-latest
@@ -60,6 +60,41 @@ jobs:
       - run: docker compose build api web
       - run: docker compose up -d postgres api web
       - run: bash scripts/compose-smoke.sh
+      - if: failure()
+        run: docker compose logs
+      - if: always()
+        run: docker compose down -v
+
+  api-e2e:
+    runs-on: ubuntu-latest
+    env:
+      VITE_API_MODE: api
+      VITE_API_BASE_URL: http://localhost:8080/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx cypress install
+      - run: docker compose build api
+      - run: docker compose up -d postgres api
+      - run: |
+          for i in {1..45}; do
+            curl -fsS http://localhost:8080/actuator/health && break
+            sleep 2
+          done
+          curl -fsS http://localhost:8080/actuator/health
+      - run: |
+          npm run dev &
+          for i in {1..30}; do
+            curl -fsS http://localhost:5173 && break
+            sleep 2
+          done
+          curl -fsS http://localhost:5173
+          npx cypress run --spec e2e/weekly-planning-api.feature
+        working-directory: apps/web
       - if: failure()
         run: docker compose logs
       - if: always()
