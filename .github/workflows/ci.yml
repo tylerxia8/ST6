@@ -16,7 +16,7 @@ jobs:
   frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -39,7 +39,7 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -56,7 +56,7 @@ jobs:
       VITE_API_MODE: api
       VITE_API_BASE_URL: http://localhost:8080/api
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker compose config
       - run: docker compose build api web
       - run: docker compose up -d postgres api web
@@ -72,7 +72,7 @@ jobs:
       VITE_API_MODE: api
       VITE_API_BASE_URL: /api
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22

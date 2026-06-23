@@ -44,7 +44,7 @@ jobs:
             sarif: trivy-web.sarif
             category: trivy-web
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build image
         uses: docker/build-push-action@v6
