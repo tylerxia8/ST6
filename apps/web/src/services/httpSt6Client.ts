@@ -46,11 +46,18 @@ function remember(plan: BackendPlan): WeeklyPlan {
   return mapped;
 }
 
-function requireCurrentPlanId(): string {
+function currentPlanIdOrThrow(): string {
   if (!currentPlanId) {
     throw new Error("Current plan must be loaded before mutating commits");
   }
   return currentPlanId;
+}
+
+async function requireCurrentPlanId(): Promise<string> {
+  if (!currentPlanId) {
+    await getCurrentPlanFromApi();
+  }
+  return currentPlanIdOrThrow();
 }
 
 async function getCurrentPlanFromApi(): Promise<WeeklyPlan> {
@@ -74,7 +81,7 @@ export const httpSt6Client: St6Client = {
   },
   async addCommit(commit: NewCommit) {
     return remember(
-      await requestJson<BackendPlan>(`/plans/${requireCurrentPlanId()}/commits`, {
+      await requestJson<BackendPlan>(`/plans/${await requireCurrentPlanId()}/commits`, {
         method: "POST",
         body: JSON.stringify({
           title: commit.title,
@@ -92,9 +99,10 @@ export const httpSt6Client: St6Client = {
       return getCurrentPlanFromApi();
     }
 
+    const planId = await requireCurrentPlanId();
     return remember(
       await requestJson<BackendPlan>(
-        `/plans/${requireCurrentPlanId()}/commits/${commit.id}/reconciliation`,
+        `/plans/${planId}/commits/${commit.id}/reconciliation`,
         {
           method: "PATCH",
           body: JSON.stringify({
@@ -107,15 +115,17 @@ export const httpSt6Client: St6Client = {
     );
   },
   async deleteCommit(commitId: string) {
+    const planId = await requireCurrentPlanId();
     return remember(
-      await requestJson<BackendPlan>(`/plans/${requireCurrentPlanId()}/commits/${commitId}`, {
+      await requestJson<BackendPlan>(`/plans/${planId}/commits/${commitId}`, {
         method: "DELETE"
       })
     );
   },
   async advanceLifecycle() {
+    const planId = await requireCurrentPlanId();
     return remember(
-      await requestJson<BackendPlan>(`/plans/${requireCurrentPlanId()}/lifecycle/advance`, {
+      await requestJson<BackendPlan>(`/plans/${planId}/lifecycle/advance`, {
         method: "POST"
       })
     );
