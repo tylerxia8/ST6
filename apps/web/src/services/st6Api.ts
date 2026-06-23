@@ -36,32 +36,48 @@ export const st6Api = createApi({
     addCommit: builder.mutation<WeeklyPlan, NewCommit>({
       queryFn: (commit) => query(() => client.addCommit(commit)),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        } catch {
+          // Mutation errors are represented in RTK Query state.
+        }
       },
       invalidatesTags: ["Plan", "Dashboard"]
     }),
     updateCommit: builder.mutation<WeeklyPlan, WeeklyCommit>({
       queryFn: (commit) => query(() => client.updateCommit(commit)),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        } catch {
+          // Mutation errors are represented in RTK Query state.
+        }
       },
       invalidatesTags: ["Plan", "Dashboard"]
     }),
     deleteCommit: builder.mutation<WeeklyPlan, string>({
       queryFn: (commitId) => query(() => client.deleteCommit(commitId)),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        } catch {
+          // Mutation errors are represented in RTK Query state.
+        }
       },
       invalidatesTags: ["Plan", "Dashboard"]
     }),
     advanceLifecycle: builder.mutation<WeeklyPlan, void>({
       queryFn: () => query(() => client.advanceLifecycle()),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(st6Api.util.upsertQueryData("getCurrentPlan", undefined, data));
+        } catch {
+          // Mutation errors are represented in RTK Query state.
+        }
       },
       invalidatesTags: ["Plan", "Dashboard"]
     })
