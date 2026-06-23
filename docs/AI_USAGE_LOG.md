@@ -24,6 +24,7 @@ Tool: OpenAI Codex
 - Fixed API-mode commit creation by disabling CSRF for the API chain and returning detailed plans after mutations.
 - Added production deployment documentation, Kubernetes templates, a production environment template, and a tag-based image release workflow.
 - Documented the npm-vs-Nx/Yarn assessment tradeoff and the Microsoft Graph implementation boundary.
+- Added Dependabot, CodeQL, Trivy container scanning, a security policy, and OCI image labels.
 
 ## Human Decisions
 

@@ -115,3 +115,5 @@ The repo includes `docker-compose.yml` for PostgreSQL, API, and web containers. 
 ## CI
 
 GitHub Actions are configured in `.github/workflows/ci.yml` for frontend lint/test/build, Cypress E2E, backend tests, JaCoCo, Docker Compose smoke checks, and API-backed Cypress E2E. A tag-based release workflow in `.github/workflows/release.yml` publishes API and web images to GitHub Container Registry.
+
+Security automation includes Dependabot updates for npm, Gradle, Docker, and GitHub Actions; CodeQL source scanning for Java and TypeScript; and Trivy container scans uploaded to GitHub code scanning.

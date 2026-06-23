@@ -95,6 +95,7 @@ The repository includes `OutlookPlanningReminderService` as the integration boun
 ## Release Checklist
 
 - CI is green on `main`.
+- CodeQL and Trivy security scans have been reviewed.
 - A semver tag has published API and web images.
 - `AUTH0_ISSUER_URI` points at the real tenant.
 - CORS includes the PA host and remote asset domain only.

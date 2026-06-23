@@ -91,6 +91,7 @@ Application endpoints expect JWT scopes:
 
 - [Technical Documentation](docs/TECHNICAL_DOCUMENTATION.md)
 - [Deployment Guide](docs/DEPLOYMENT.md)
+- [Security Policy](SECURITY.md)
 - [Test Results](docs/TEST_RESULTS.md)
 - [AI Usage Log](docs/AI_USAGE_LOG.md)
 - [Demo Script](docs/DEMO_SCRIPT.md)
@@ -105,3 +106,9 @@ and CloudFront-hosted Module Federation assets. See `.env.production.example`,
 The assessment repo uses npm workspaces for portability in this environment. The code is
 kept in an Nx-compatible monorepo shape (`apps/web`, `apps/api`, shared root scripts), but
 Nx/Yarn wiring is intentionally documented rather than required for reviewers to run it.
+
+## Security Automation
+
+Dependabot tracks npm, Gradle, Docker, and GitHub Actions updates. CodeQL scans Java and
+TypeScript source, and Trivy scans built API/web container images with SARIF upload to
+GitHub code scanning.

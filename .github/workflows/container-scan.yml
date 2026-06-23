@@ -1,0 +1,70 @@
+name: Container Scan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/**/Dockerfile"
+      - "apps/**"
+      - "package*.json"
+      - "docker-compose.yml"
+      - ".github/workflows/container-scan.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/**/Dockerfile"
+      - "apps/**"
+      - "package*.json"
+      - "docker-compose.yml"
+      - ".github/workflows/container-scan.yml"
+  schedule:
+    - cron: "42 8 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    name: Build and scan images
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: st6-api:scan
+            dockerfile: apps/api/Dockerfile
+            context: apps/api
+            sarif: trivy-api.sarif
+            category: trivy-api
+          - image: st6-web:scan
+            dockerfile: apps/web/Dockerfile
+            context: .
+            sarif: trivy-web.sarif
+            category: trivy-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          load: true
+          tags: ${{ matrix.image }}
+
+      - name: Scan image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ matrix.image }}
+          format: sarif
+          output: ${{ matrix.sarif }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "0"
+
+      - name: Upload scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ matrix.sarif }}
+          category: ${{ matrix.category }}
