@@ -34,6 +34,7 @@ jobs:
           done
           curl -fsS http://localhost:5173
           npx cypress run --spec e2e/weekly-planning.feature
+        working-directory: apps/web
 
   backend:
     runs-on: ubuntu-latest
