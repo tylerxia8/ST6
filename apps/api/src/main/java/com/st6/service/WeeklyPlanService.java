@@ -90,7 +90,8 @@ public class WeeklyPlanService {
                         .priority(request.priority())
                         .plannedHours(request.plannedHours())
                         .build());
-        return weeklyPlanRepository.save(plan);
+        weeklyPlanRepository.save(plan);
+        return getPlanWithDetails(planId);
     }
 
     @Transactional
@@ -108,7 +109,8 @@ public class WeeklyPlanService {
         commit.setActualHours(request.actualHours());
         commit.setStatus(request.status());
         commit.setManagerNote(request.managerNote());
-        return weeklyPlanRepository.save(plan);
+        weeklyPlanRepository.save(plan);
+        return getPlanWithDetails(planId);
     }
 
     @Transactional
@@ -118,7 +120,8 @@ public class WeeklyPlanService {
         if (!removed) {
             throw new IllegalArgumentException("Commit not found");
         }
-        return weeklyPlanRepository.save(plan);
+        weeklyPlanRepository.save(plan);
+        return getPlanWithDetails(planId);
     }
 
     @Transactional
@@ -146,7 +149,8 @@ public class WeeklyPlanService {
                 });
             }
         }
-        return weeklyPlanRepository.save(plan);
+        weeklyPlanRepository.save(plan);
+        return getPlanWithDetails(planId);
     }
 
     private WeeklyPlan getEditablePlan(UUID planId) {
@@ -155,5 +159,9 @@ public class WeeklyPlanService {
             throw new IllegalStateException("Commit changes are only allowed in draft");
         }
         return plan;
+    }
+
+    private WeeklyPlan getPlanWithDetails(UUID planId) {
+        return weeklyPlanRepository.findDetailedById(planId).orElseThrow();
     }
 }
