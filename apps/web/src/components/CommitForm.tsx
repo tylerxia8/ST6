@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { Button, Label, Select, TextInput, Textarea } from "flowbite-react";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { CommitCategory, SupportingOutcome } from "../domain/types";
 
 interface CommitFormProps {
@@ -25,6 +25,12 @@ export function CommitForm({ outcomes, onAdd, disabled }: CommitFormProps) {
   const [category, setCategory] = useState<CommitCategory>("Queen");
   const [priority, setPriority] = useState(1);
   const [plannedHours, setPlannedHours] = useState(4);
+
+  useEffect(() => {
+    if (!supportingOutcomeId && outcomes[0]) {
+      setSupportingOutcomeId(outcomes[0].id);
+    }
+  }, [outcomes, supportingOutcomeId]);
 
   const canSubmit = useMemo(
     () => title.trim().length > 2 && supportingOutcomeId.length > 0 && plannedHours > 0,

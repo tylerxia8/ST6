@@ -18,7 +18,7 @@ When("she adds an API-backed commit linked to a Supporting Outcome", () => {
   cy.findByLabelText("Chess Layer").select("Knight");
   cy.findByLabelText("Priority").clear().type("4");
   cy.findByLabelText("Planned Hours").clear().type("5");
-  cy.findByRole("button", { name: /Add commit/i }).click();
+  cy.findByRole("button", { name: /Add commit/i }).should("be.enabled").click();
   cy.wait("@addCommit");
 });
 
