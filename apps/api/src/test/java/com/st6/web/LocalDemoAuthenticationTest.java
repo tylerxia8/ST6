@@ -25,4 +25,18 @@ class LocalDemoAuthenticationTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].rallyCry").value("Win enterprise trust"));
     }
+
+    @Test
+    void localManagerCanReviewSeededTeamDashboard() throws Exception {
+        mockMvc.perform(get("/api/managers/u-morgan/dashboard?weekStart=2026-06-22"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.teamMembers", hasSize(1)))
+                .andExpect(jsonPath("$.teamMembers[0].name").value("Ava Chen"));
+    }
+
+    @Test
+    void localManagerCannotReviewAnotherManagersTeam() throws Exception {
+        mockMvc.perform(get("/api/managers/u-other/dashboard?weekStart=2026-06-22"))
+                .andExpect(status().isForbidden());
+    }
 }
