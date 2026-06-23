@@ -38,10 +38,10 @@ public class LocalDemoAuthenticationFilter extends OncePerRequestFilter {
                         || authentication == null
                         || authentication instanceof AnonymousAuthenticationToken;
         if (appliedDemoAuthentication) {
-            SecurityContextHolder.getContext()
-                    .setAuthentication(
-                            new UsernamePasswordAuthenticationToken(
-                                    "u-morgan", "local-demo", AUTHORITIES));
+            var context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(
+                    new UsernamePasswordAuthenticationToken("u-morgan", "local-demo", AUTHORITIES));
+            SecurityContextHolder.setContext(context);
         }
         LOGGER.info(
                 "Local demo auth method={} uri={} origin={} authorizationKind={} existingAuth={} applied={}",
