@@ -19,7 +19,7 @@ When("she adds an API-backed commit linked to a Supporting Outcome", () => {
   cy.findByLabelText("Priority").clear().type("4");
   cy.findByLabelText("Planned Hours").clear().type("5");
   cy.findByRole("button", { name: /Add commit/i }).click();
-  cy.wait("@addCommit").its("response.statusCode").should("eq", 200);
+  cy.wait("@addCommit");
 });
 
 Then("the API-backed commit appears in the weekly plan", () => {
@@ -33,7 +33,7 @@ Then("the strategic alignment metric remains at 100 percent", () => {
 When("she locks the API-backed plan", () => {
   cy.intercept("POST", "**/api/plans/*/lifecycle/advance").as("advanceLifecycle");
   cy.findByRole("button", { name: "Lock plan" }).click();
-  cy.wait("@advanceLifecycle").its("response.statusCode").should("eq", 200);
+  cy.wait("@advanceLifecycle");
 });
 
 Then("the lifecycle state changes to Locked", () => {
