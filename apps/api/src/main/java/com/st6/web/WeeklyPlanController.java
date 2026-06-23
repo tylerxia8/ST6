@@ -81,7 +81,7 @@ public class WeeklyPlanController {
     }
 
     @GetMapping("/managers/{managerId}/plans")
-    @PreAuthorize("@st6Authorization.canReviewTeam(authentication)")
+    @PreAuthorize("@st6Authorization.canReviewTeam(authentication, #managerId)")
     public Page<TeamMemberSummaryResponse> teamPlans(
             @PathVariable String managerId, @RequestParam LocalDate weekStart, Pageable pageable) {
         return weeklyPlanService
@@ -90,7 +90,7 @@ public class WeeklyPlanController {
     }
 
     @GetMapping("/managers/{managerId}/dashboard")
-    @PreAuthorize("@st6Authorization.canReviewTeam(authentication)")
+    @PreAuthorize("@st6Authorization.canReviewTeam(authentication, #managerId)")
     public ManagerDashboardResponse managerDashboard(
             @PathVariable String managerId, @RequestParam LocalDate weekStart, Pageable pageable) {
         return weeklyPlanService.getManagerDashboard(managerId, weekStart, pageable);

@@ -15,8 +15,10 @@ public class St6AuthorizationService {
         return hasScope(authentication, "st6:write") || hasScope(authentication, "st6:admin");
     }
 
-    public boolean canReviewTeam(Authentication authentication) {
-        return hasScope(authentication, "st6:manager") || hasScope(authentication, "st6:admin");
+    public boolean canReviewTeam(Authentication authentication, String managerId) {
+        return hasScope(authentication, "st6:admin")
+                || (hasScope(authentication, "st6:manager")
+                        && authentication.getName().equals(managerId));
     }
 
     public boolean canReadOutcomes(Authentication authentication) {

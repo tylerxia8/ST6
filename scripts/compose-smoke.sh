@@ -4,6 +4,7 @@ set -euo pipefail
 API_BASE_URL="${API_BASE_URL:-http://localhost:8080}"
 WEB_BASE_URL="${WEB_BASE_URL:-http://localhost:8088}"
 OWNER_ID="${DEMO_OWNER_ID:-u-ava}"
+MANAGER_ID="${DEMO_MANAGER_ID:-u-morgan}"
 WEEK_START="${DEMO_WEEK_START:-2026-06-22}"
 
 wait_for() {
@@ -23,6 +24,8 @@ wait_for() {
 wait_for "$API_BASE_URL/actuator/health" 45
 curl -fsS "$API_BASE_URL/api/outcomes" | grep "Win enterprise trust" >/dev/null
 curl -fsS "$API_BASE_URL/api/plans/current?ownerId=$OWNER_ID&weekStart=$WEEK_START" \
+  | grep "Ava Chen" >/dev/null
+curl -fsS "$API_BASE_URL/api/managers/$MANAGER_ID/dashboard?weekStart=$WEEK_START" \
   | grep "Ava Chen" >/dev/null
 
 wait_for "$WEB_BASE_URL" 30

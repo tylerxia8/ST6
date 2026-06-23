@@ -29,7 +29,8 @@ public class LocalDemoAuthenticationFilter extends OncePerRequestFilter {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             SecurityContextHolder.getContext()
                     .setAuthentication(
-                            new UsernamePasswordAuthenticationToken("u-ava", "local-demo", AUTHORITIES));
+                            new UsernamePasswordAuthenticationToken(
+                                    "u-morgan", "local-demo", AUTHORITIES));
         }
 
         filterChain.doFilter(request, response);
