@@ -87,6 +87,7 @@ jobs:
             sleep 2
           done
           curl -fsS http://localhost:8080/actuator/health
+          curl -fsS -H "Origin: http://localhost:5173" "http://localhost:8080/api/plans/current?ownerId=u-ava&weekStart=2026-06-22" | grep "Ava Chen"
       - run: |
           npm run dev &
           for i in {1..30}; do
