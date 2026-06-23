@@ -20,13 +20,16 @@ let currentPlanId: string | undefined;
 let currentLifecycleState: WeeklyPlan["lifecycleState"] | undefined;
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const headers: HeadersInit = {
+    Accept: "application/json",
+    ...(init?.body ? { "Content-Type": "application/json" } : {}),
+    ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    ...init?.headers
+  };
+
   const response = await fetch(`${apiBaseUrl}${path}`, {
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-      ...init?.headers
-    }
+    headers
   });
 
   if (!response.ok) {
