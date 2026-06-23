@@ -4,21 +4,8 @@ const apiCommitTitle = "Validate API-backed Graph sync";
 
 Given("Ava opens the API-backed weekly planning workspace", () => {
   cy.intercept("GET", "**/api/plans/current*").as("getCurrentPlan");
-  cy.request({
-    failOnStatusCode: false,
-    url: "http://localhost:8080/api/plans/current?ownerId=u-ava&weekStart=2026-06-22"
-  }).then((response) => {
-    expect(response.status, `Cypress API probe body: ${JSON.stringify(response.body)}`).to.eq(200);
-  });
   cy.visit("/");
-  cy.wait("@getCurrentPlan").then((interception) => {
-    expect(
-      interception.response?.statusCode,
-      `Browser API ${interception.request.method} ${interception.request.url} body: ${JSON.stringify(
-        interception.response?.body ?? null
-      )}`
-    ).to.eq(200);
-  });
+  cy.wait("@getCurrentPlan").its("response.statusCode").should("eq", 200);
   cy.findByTestId("workspace-title").should("contain", "Ava Chen");
 });
 
