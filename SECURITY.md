@@ -21,7 +21,7 @@ The repository includes:
 
 - Dependabot updates for npm, Gradle, Docker, and GitHub Actions.
 - CodeQL scanning for Java and TypeScript.
-- Trivy container image scans uploaded to GitHub code scanning.
+- Trivy container image scans saved as SARIF artifacts, with best-effort upload to GitHub code scanning when repository settings allow it.
 - CI coverage for frontend lint/test/build, backend tests and coverage, Docker Compose smoke checks, and API-backed Cypress E2E.
 
-Trivy currently uploads findings without failing CI so the first baseline can be reviewed. After triage, set `exit-code: "1"` in `.github/workflows/container-scan.yml` to enforce a blocking gate for high and critical fixed vulnerabilities.
+Trivy currently reports findings without failing CI so the first baseline can be reviewed. After triage, set `exit-code: "1"` in `.github/workflows/container-scan.yml` to enforce a blocking gate for high and critical fixed vulnerabilities.
