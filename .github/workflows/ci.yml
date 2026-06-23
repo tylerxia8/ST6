@@ -66,6 +66,9 @@ jobs:
           done
           curl -fsS http://localhost:8080/actuator/health
       - run: |
+          curl -fsS http://localhost:8080/api/outcomes | grep "Win enterprise trust"
+          curl -fsS "http://localhost:8080/api/plans/current?ownerId=u-ava&weekStart=2026-06-22" | grep "Ava Chen"
+      - run: |
           for i in {1..30}; do
             curl -fsS http://localhost:8088 && break
             sleep 2
