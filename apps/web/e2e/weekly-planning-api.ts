@@ -19,7 +19,12 @@ When("she adds an API-backed commit linked to a Supporting Outcome", () => {
   cy.findByLabelText("Priority").clear().type("4");
   cy.findByLabelText("Planned Hours").clear().type("5");
   cy.findByRole("button", { name: /Add commit/i }).should("be.enabled").click();
-  cy.wait("@addCommit");
+  cy.wait("@addCommit").then((interception) => {
+    expect(
+      interception.response?.statusCode,
+      `Add commit ${interception.request.url} response: ${JSON.stringify(interception.response?.body ?? null)}`
+    ).to.eq(200);
+  });
 });
 
 Then("the API-backed commit appears in the weekly plan", () => {
