@@ -14,3 +14,5 @@ apps/web/*.d.ts
 apps/web/vite.config.js
 apps/web/vitest.config.js
 .DS_Store
+.chrome-tmp/
+.npm-cache/

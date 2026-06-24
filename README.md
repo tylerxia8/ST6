@@ -18,6 +18,15 @@ ST6 is a strategic weekly planning module that replaces disconnected 15Five plan
 
 ## Quick Start
 
+To view the finished ST6 workflow without installing dependencies, open:
+
+```text
+demo/index.html
+```
+
+That standalone demo includes the weekly commitment board, lifecycle controls,
+reconciliation view, and manager dashboard.
+
 ```bash
 npm install
 npm run dev

@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ST6 Weekly Commitments Demo</title>
+    <style>
+      :root {
+        --ink: #18232f;
+        --muted: #617080;
+        --line: #d9e0e7;
+        --cloud: #f4f7f9;
+        --panel: #ffffff;
+        --moss: #3f6f58;
+        --copper: #aa6844;
+        --blue: #325c8f;
+        --red: #b64242;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--cloud);
+        color: var(--ink);
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .topbar {
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .wrap {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        padding: 22px 0;
+      }
+
+      .hero-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--moss);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .mark {
+        display: inline-grid;
+        width: 18px;
+        height: 18px;
+        place-items: center;
+        border-radius: 4px;
+        background: var(--moss);
+        color: white;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        margin-top: 8px;
+        font-size: clamp(26px, 3vw, 38px);
+        line-height: 1.12;
+        letter-spacing: 0;
+      }
+
+      .subcopy {
+        margin-top: 8px;
+        max-width: 760px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      .primary {
+        min-height: 40px;
+        border: 0;
+        border-radius: 6px;
+        background: var(--ink);
+        color: white;
+        padding: 0 15px;
+        font-weight: 700;
+      }
+
+      .rail {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .rail-step {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 10px;
+        background: #f9fbfc;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .rail-step.active {
+        border-color: var(--moss);
+        background: #eaf4ee;
+        color: var(--moss);
+      }
+
+      main {
+        display: grid;
+        gap: 18px;
+        padding: 20px 0 36px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 1px 2px rgb(24 35 47 / 6%);
+      }
+
+      .metric,
+      .panel,
+      .dashboard {
+        padding: 16px;
+      }
+
+      .label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .metric-value {
+        margin-top: 8px;
+        font-size: 30px;
+        font-weight: 800;
+      }
+
+      .helper {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 18px;
+      }
+
+      .form {
+        display: grid;
+        grid-template-columns: 1.3fr 0.8fr 0.45fr 0.55fr auto;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      input,
+      select {
+        min-height: 40px;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: white;
+        color: var(--ink);
+        padding: 0 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 14px;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        border-top: 1px solid var(--line);
+        padding: 12px 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .status {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: #eaf4ee;
+        color: var(--moss);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .status.blocked {
+        background: #faece9;
+        color: var(--red);
+      }
+
+      .small-btn {
+        min-height: 32px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: white;
+        color: var(--ink);
+        padding: 0 10px;
+        font-weight: 700;
+      }
+
+      .side,
+      .side-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .side {
+        align-content: start;
+        gap: 18px;
+      }
+
+      .side-list,
+      .team {
+        margin-top: 14px;
+      }
+
+      .mini,
+      .member {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 12px;
+      }
+
+      .mini strong,
+      .member strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .team {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .score {
+        margin-top: 10px;
+        color: var(--blue);
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      @media (max-width: 920px) {
+        .hero-row {
+          display: grid;
+        }
+
+        .workspace,
+        .form {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics,
+        .team {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 620px) {
+        .metrics,
+        .rail,
+        .team {
+          grid-template-columns: 1fr;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap hero">
+        <div class="hero-row">
+          <div>
+            <div class="eyebrow"><span class="mark">S6</span> ST6 Weekly Commitments</div>
+            <h1>Ava Patel's plan for 2026-06-22</h1>
+            <p class="subcopy">
+              Weekly work is mapped to the RCDO hierarchy before manager review, then reconciled with actual effort and
+              carry-forward decisions.
+            </p>
+          </div>
+          <button class="primary" id="advanceBtn" type="button">Submit for review</button>
+        </div>
+        <div class="rail" id="rail"></div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="metrics" id="metrics"></section>
+
+      <section class="workspace">
+        <div class="card panel">
+          <h2>Commitments</h2>
+          <form class="form" id="commitForm">
+            <label class="field">
+              <span>Title</span>
+              <input id="titleInput" required value="Draft renewal risk brief" />
+            </label>
+            <label class="field">
+              <span>Outcome</span>
+              <select id="outcomeInput">
+                <option>Revenue Retention</option>
+                <option>Product Adoption</option>
+                <option>Operating Cadence</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Hours</span>
+              <input id="hoursInput" min="1" max="40" required type="number" value="4" />
+            </label>
+            <label class="field">
+              <span>Priority</span>
+              <select id="priorityInput">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </label>
+            <button class="primary" type="submit">Add</button>
+          </form>
+          <table>
+            <thead>
+              <tr>
+                <th>Commitment</th>
+                <th>Outcome</th>
+                <th>Hours</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="commitRows"></tbody>
+          </table>
+        </div>
+
+        <aside class="side">
+          <section class="card panel">
+            <h2>Reconciliation</h2>
+            <div class="side-list" id="reconciliation"></div>
+          </section>
+          <section class="card panel">
+            <h2>Review Queue</h2>
+            <p class="helper" id="queueText"></p>
+          </section>
+        </aside>
+      </section>
+
+      <section class="card dashboard">
+        <h2>Manager Dashboard</h2>
+        <div class="team" id="team"></div>
+      </section>
+    </main>
+
+    <script>
+      const lifecycle = ["Draft", "Submitted", "Reviewed", "Reconciled"];
+      let lifecycleIndex = 0;
+      let commits = [
+        ["Map Q3 expansion accounts to RCDO outcomes", "Revenue Retention", 8, 7, "Planned"],
+        ["Run adoption review for at-risk product cohort", "Product Adoption", 6, 8, "Blocked"],
+        ["Prepare manager review notes", "Operating Cadence", 3, 3, "Planned"]
+      ];
+      const team = [
+        ["Ava Patel", "Draft", 100, 17],
+        ["Noah Kim", "Submitted", 88, 21],
+        ["Mia Chen", "Reviewed", 93, 18],
+        ["Leo Grant", "Draft", 72, 24]
+      ];
+
+      function render() {
+        const planned = commits.reduce((sum, commit) => sum + commit[2], 0);
+        const actual = commits.reduce((sum, commit) => sum + commit[3], 0);
+        const state = lifecycle[lifecycleIndex];
+
+        document.querySelector("#advanceBtn").textContent =
+          lifecycleIndex === lifecycle.length - 1 ? "Reset lifecycle" : lifecycleIndex === 0 ? "Submit for review" : "Advance lifecycle";
+        document.querySelector("#rail").innerHTML = lifecycle
+          .map((item, index) => `<div class="rail-step ${index === lifecycleIndex ? "active" : ""}">${item}</div>`)
+          .join("");
+        document.querySelector("#metrics").innerHTML = [
+          ["Strategic Alignment", commits.length ? "100%" : "0%", "Commits linked to RCDO"],
+          ["Planned Capacity", `${planned}h`, "Total weekly commitments"],
+          ["Actuals Logged", `${actual}h`, "Used during reconciliation"],
+          ["Lifecycle", state, "Controls edit and review state"]
+        ]
+          .map(([label, value, helper]) => `<article class="card metric"><div class="label">${label}</div><div class="metric-value">${value}</div><p class="helper">${helper}</p></article>`)
+          .join("");
+        document.querySelector("#commitRows").innerHTML = commits
+          .map(
+            (commit, index) => `<tr>
+              <td><strong>${commit[0]}</strong></td>
+              <td>${commit[1]}</td>
+              <td>${commit[2]}h planned<br />${commit[3]}h actual</td>
+              <td><span class="status ${commit[4] === "Blocked" ? "blocked" : ""}">${commit[4]}</span></td>
+              <td><button class="small-btn" data-remove="${index}" type="button">Remove</button></td>
+            </tr>`
+          )
+          .join("");
+        document.querySelector("#reconciliation").innerHTML = commits
+          .map((commit) => {
+            const variance = commit[3] - commit[2];
+            return `<div class="mini"><strong>${commit[0]}</strong><span class="helper">${commit[4]} / variance ${variance >= 0 ? "+" : ""}${variance}h</span></div>`;
+          })
+          .join("");
+        document.querySelector("#queueText").textContent = team.filter((member) => member[1] !== "Reconciled").length + " plans need manager attention.";
+        document.querySelector("#team").innerHTML = team
+          .map(([name, memberState, score, hours]) => `<article class="member"><strong>${name}</strong><p class="helper">${memberState} / ${hours}h planned</p><div class="score">${score}%</div></article>`)
+          .join("");
+      }
+
+      document.querySelector("#commitForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        commits = [
+          ...commits,
+          [
+            document.querySelector("#titleInput").value.trim(),
+            document.querySelector("#outcomeInput").value,
+            Number(document.querySelector("#hoursInput").value),
+            0,
+            "Planned"
+          ]
+        ];
+        event.currentTarget.reset();
+        document.querySelector("#titleInput").value = "Draft renewal risk brief";
+        document.querySelector("#hoursInput").value = "4";
+        render();
+      });
+
+      document.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-remove]");
+        if (button) {
+          commits = commits.filter((_, index) => index !== Number(button.dataset.remove));
+          render();
+        }
+      });
+
+      document.querySelector("#advanceBtn").addEventListener("click", () => {
+        lifecycleIndex = lifecycleIndex === lifecycle.length - 1 ? 0 : lifecycleIndex + 1;
+        team[0][1] = lifecycle[lifecycleIndex];
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
