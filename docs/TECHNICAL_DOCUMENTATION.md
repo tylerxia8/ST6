@@ -15,6 +15,8 @@ The repository is organized as a small monorepo:
 
 The frontend can run standalone for assessment and is also configured as a Vite Module Federation remote named `st6_weekly_commitments`. It exposes `./WeeklyCommitments` from `src/remote/WeeklyCommitmentsRemote.tsx`.
 
+Both the standalone entry point and the Module Federation remote are wrapped in an error boundary so an unexpected render failure shows a recovery panel instead of blanking the app or host shell.
+
 ## Frontend Behavior
 
 The first screen is the weekly planning workspace. It includes:
