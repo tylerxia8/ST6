@@ -97,6 +97,12 @@ Application endpoints expect JWT scopes:
 - [Demo Script](docs/DEMO_SCRIPT.md)
 - [Demo Video Guide](docs/DEMO_VIDEO_GUIDE.md)
 
+## Submission Status
+
+The repository is assessment-ready without a recorded demo video. The demo script and guide
+remain in `docs/` for reviewers who want a walkthrough, but the executable app, API,
+Docker runtime, CI, API-backed E2E, CodeQL, and container scans are the primary evidence.
+
 ## Production Path
 
 Production deployment uses the Spring API image, PostgreSQL/RDS, Auth0 JWT validation,

@@ -30,10 +30,11 @@ Tool: OpenAI Codex
 
 - User requested that all aspects of the PRD be completed.
 - Implementation prioritized a complete assessment artifact that runs locally without requiring PostgreSQL, Auth0, AWS, or PA host infrastructure.
+- User decided the recorded demo video can be skipped; the repository keeps a script and guide as optional reviewer support.
 
 ## Limitations
 
 - The frontend defaults to mock mode for demo reliability, but CI now validates API mode against the Spring backend.
 - Local full-stack validation was limited by the remaining local disk budget after cache cleanup; GitHub Actions is the authoritative validation path.
 - Microsoft Graph reminder delivery is represented by an interface and no-op implementation until tenant credentials and calendar/mail rules are supplied.
-- Demo video is represented by a script/checklist in this repository; an actual recorded video file still requires screen recording.
+- Demo video is intentionally skipped for submission; the repository includes a script/checklist instead.

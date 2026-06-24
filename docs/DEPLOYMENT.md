@@ -102,4 +102,4 @@ The repository includes `OutlookPlanningReminderService` as the integration boun
 - RDS backups and retention are configured.
 - Flyway migrations have run successfully.
 - CloudFront invalidation completed after asset upload.
-- Demo video is recorded from the release candidate.
+- Demo script or optional walkthrough guide has been reviewed for the release candidate.

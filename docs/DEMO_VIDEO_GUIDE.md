@@ -1,5 +1,7 @@
 # Demo Video Guide
 
+Status: skipped for submission. This guide is retained as optional recording support.
+
 Target length: 3-5 minutes.
 
 ## Recording Flow
